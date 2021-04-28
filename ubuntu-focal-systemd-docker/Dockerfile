@@ -61,11 +61,16 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
 # Install code-server
 RUN wget https://github.com/cdr/code-server/releases/download/v3.9.3/code-server_3.9.3_amd64.deb
 RUN apt-get install ./code-server_3.9.3_amd64.deb -y
+#COPY wrapper_script.sh /
+#RUN chmod 777 wrapper_script.sh
+#RUN ./wrapper_script.sh
+COPY code-server.service /lib/systemd/system/code-server.service
+#RUN systemctl start code-server
+#RUN systemctl status code-server
+RUN systemctl enable code-server
 
 EXPOSE 22
 
 # Set systemd as entrypoint.
-#ENTRYPOINT [ "/sbin/init", "--log-level=err" ]
-COPY wrapper_script.sh /
-RUN chmod 777 wrapper_script.sh
-ENTRYPOINT [ "./wrapper_script.sh"]
+ENTRYPOINT [ "/sbin/init", "--log-level=err" ]
+#RUN systemctl daemon-reload
