@@ -16,12 +16,16 @@
 FROM nestybox/ubuntu-focal-systemd:latest
 
 # Docker install
+RUN mkdir /usr/share/man/man1/
 RUN apt-get update && apt-get install --no-install-recommends -y      \
        apt-transport-https                                            \
        ca-certificates                                                \
        curl                                                           \
        gnupg-agent                                                    \
        software-properties-common                                     \
+       openjdk-8-jdk \
+       openjdk-11-jdk \
+       tmux \ 
        wget &&                                  \
                                                                       \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg           \
@@ -61,13 +65,13 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
 # Install code-server
 RUN wget https://github.com/cdr/code-server/releases/download/v3.9.3/code-server_3.9.3_amd64.deb
 RUN apt-get install ./code-server_3.9.3_amd64.deb -y
-#COPY wrapper_script.sh /
-#RUN chmod 777 wrapper_script.sh
-#RUN ./wrapper_script.sh
 COPY code-server.service /lib/systemd/system/code-server.service
-#RUN systemctl start code-server
-#RUN systemctl status code-server
 RUN systemctl enable code-server
+#USER admin
+RUN code-server --install-extension Pivotal.vscode-boot-dev-pack --extensions-dir /usr/lib/code-server/lib/vscode/extensions
+RUN code-server --install-extension vscjava.vscode-java-pack --extensions-dir /usr/lib/code-server/lib/vscode/extensions
+RUN code-server --install-extension dgileadi.java-decompiler --extensions-dir /usr/lib/code-server/lib/vscode/extensions
+RUN code-server --install-extension humao.rest-client --extensions-dir /usr/lib/code-server/lib/vscode/extensions
 
 EXPOSE 22
 
