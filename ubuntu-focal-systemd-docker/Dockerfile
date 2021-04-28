@@ -15,7 +15,7 @@
 
 FROM nestybox/ubuntu-focal-systemd:latest
 
-# Docker install
+# Docker install and tooling
 RUN mkdir /usr/share/man/man1/
 RUN apt-get update && apt-get install --no-install-recommends -y      \
        apt-transport-https                                            \
@@ -25,7 +25,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
        software-properties-common                                     \
        openjdk-8-jdk \
        openjdk-11-jdk \
+       openjdk-14-jdk \
        tmux \ 
+       jq \ 
+       git \
        wget &&                                  \
                                                                       \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg           \
