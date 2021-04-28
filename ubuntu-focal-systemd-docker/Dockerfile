@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
        ca-certificates                                                \
        curl                                                           \
        gnupg-agent                                                    \
-       software-properties-common &&                                  \
+       software-properties-common                                     \
+       wget &&                                  \
                                                                       \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg           \
          | apt-key add - &&                                           \
@@ -57,8 +58,14 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
     mkdir /home/admin/.ssh &&                                         \
     chown admin:admin /home/admin/.ssh
 
+# Install code-server
+RUN wget https://github.com/cdr/code-server/releases/download/v3.9.3/code-server_3.9.3_amd64.deb
+RUN apt-get install ./code-server_3.9.3_amd64.deb -y
+
 EXPOSE 22
 
 # Set systemd as entrypoint.
-ENTRYPOINT [ "/sbin/init", "--log-level=err" ]
-
+#ENTRYPOINT [ "/sbin/init", "--log-level=err" ]
+COPY wrapper_script.sh /
+RUN chmod 777 wrapper_script.sh
+ENTRYPOINT [ "./wrapper_script.sh"]
