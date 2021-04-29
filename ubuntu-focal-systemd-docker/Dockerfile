@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y      \
        tmux \ 
        jq \ 
        git \
+       htop \
        #nginx \
        kafkacat \
        wget &&                                  \

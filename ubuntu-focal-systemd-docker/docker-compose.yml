@@ -2,6 +2,17 @@ version: '3.3'
 services:
     nestybox-ubuntu:
         ports:
-            - '8080:8080'
+            - '8099:8080'
             - '24:22'
+            - '99:80'
         image: nestybox-ubuntu
+        labels:
+            - traefik.backend=code-server
+            - traefik.frontend.rule=Host:code-server.ocp4.de
+            - traefik.docker.network=web
+            - traefik.port=8099
+
+networks:
+    default:
+        external:
+            name: web
