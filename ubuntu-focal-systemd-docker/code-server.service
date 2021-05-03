@@ -5,9 +5,9 @@ After=nginx.service
 [Service]
 Type=simple
 Environment=PASSWORD=admin
-USER=1000
-GROUP=1000
-ExecStart=/usr/bin/code-server --bind-addr 0.0.0.0:8080 --proxy-domain code-server.ocp4.de --user-data-dir /var/lib/code-server
+User=1000
+Group=1000
+ExecStart=/usr/bin/code-server --bind-addr 0.0.0.0:8080 --user-data-dir /var/lib/code-server
 Restart=always
 
 [Install]
